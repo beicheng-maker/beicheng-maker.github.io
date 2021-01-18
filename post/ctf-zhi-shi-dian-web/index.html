@@ -1,0 +1,333 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CTF 知识点(WEB) | Gridea</title>
+<link rel="shortcut icon" href="https://beicheng-maker.github.io//favicon.ico?v=1610949188503">
+<link href="https://cdn.remixicon.com/releases/v2.1.0/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://beicheng-maker.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CTF 知识点(WEB) | Gridea - Atom Feed" href="https://beicheng-maker.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="正则匹配
+可回溯 可造成dos
+&lt;?php
+phpinfo();//a.str_repeat('a',1000000)
+
+反序列化
+数据（变量）序列化（持久化）
+将一个变量的数据&quot;转换为&quot;字符串，但并不是类型转换，..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://beicheng-maker.github.io/">
+  <img class="avatar" src="https://beicheng-maker.github.io//images/avatar.png?v=1610949188503" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CTF 知识点(WEB)
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-01-17
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="正则匹配">正则匹配</h1>
+<p>可回溯 可造成dos</p>
+<pre><code class="language-php">&lt;?php
+phpinfo();//a.str_repeat('a',1000000)
+</code></pre>
+<h1 id="反序列化">反序列化</h1>
+<p>数据（变量）序列化（持久化）</p>
+<p>将一个变量的数据&quot;转换为&quot;字符串，但并不是类型转换，目的是该字符串存储在本地，相反的行为称为反序列化</p>
+<p>序列化和反序列化的目的是使得程序见传输对象会更加方便。</p>
+<p>序列化</p>
+<p>内存数据是稍纵即逝的；</p>
+<p>通常，程序执行结束，立即全部销毁。变量所存储的数据，就是内存数据；文件时“持久数据”；</p>
+<p>序列化：</p>
+<p>就是，将内存的变量数据，“保存”到文件中的持久数据的过程。</p>
+<p>简化就是：将内存变为文件；</p>
+<pre><code class="language-php">&lt;?php
+highlight_file(__FILE__)
+class user{
+    //变量
+    public $age = 0;
+    public $name = '';
+    //方法
+    public function print_data(){
+        echo $this-&gt;name.'is'.$this-&gt;age.'years old'
+    }
+}
+//重建对象
+$usr = unserialize('O:4:&quot;user&quot;:2:{s:3:&quot;age&quot;;i&quot;18;s:4:&quot;name&quot;;s:3:&quot;Leo&quot;;}');
+$usr-&gt;print_data()
+?&gt;
+</code></pre>
+<h2 id="魔术方法">魔术方法</h2>
+<pre><code class="language-php">&lt;?php
+PHP中把以两个下划线闻开头的方法称为魔术方法(Magic methods)
+__construct()，类的构造函数
+__sleep()，执行serialize()时，先会调用这个函数
+__destruct()，类的析构函数
+__wakeup()，执行unserialize()时，先会调用这个函数
+__call()，在对象中调用一个不可访问方法时调用
+_toString()，类被当成字符串时的回应方法
+_callStatic()，用静态方式中调用一个不可访问方法时调用
+_invoke()，调用函数的方式调用一个对象时的回应方法
+_get()，获得一个类的成员变量时调用
+__set_state()，调用var_export()导出类时，此静态方法会被调用。
+_set()，设置一个类的成员变量时调用
+__clone()，当对象复制完成时调用
+_isset()，当对不可访问属性调用isset()或empty()时调用
+_autoload()，尝试加载未定义的类
+__unset()，当对不可访问属性调用unset()时被调用。
+__debugInfo()，打印所需调试信息
+
+ ?&gt;
+
+</code></pre>
+<p>注意点</p>
+<p>\x00+类名+\x00+变量名 反序列化出来的是private变量</p>
+<p>\x00+*+\x00+变量名 反序列化出来的是protected变量</p>
+<p>'O:+4'</p>
+<p>PHP Bug</p>
+<p>简单来说就是当序列化字符串中，如果表示对象属性个数的值大于真实属性个数时就会跳过__wakeup的执行</p>
+<h2 id="phar反序列化">phar反序列化</h2>
+<p>利用这种方法可以在不使用unserialize()函数的情况下出发PHP反序列化漏洞。</p>
+<p>漏洞触发点在使用phar://伪协议读取文件的时候，文件内容会被解析成phar对象，然后phar对象内的Meta data信息会被反序列化</p>
+<p>Demo</p>
+<pre><code class="language-php">&lt;?php
+$phar=new Phar('test.phar');
+$phar-&gt;startBuffering();
+$phar-&gt;addFromString('test.txt','text');
+$phar-&gt;('&lt;?php __HALT_COMPILER();?&gt;');
+class AnyClass();
+$object = new AnyClass;
+$object-&gt;data = 'rips';
+$phar-&gt;setMetadata($object);
+$phar-&gt;stopBuffering();
+?&gt;
+</code></pre>
+<h1 id="sql注入">SQL注入</h1>
+<h2 id="order-by注入">order by注入</h2>
+<p>ORDER BY column_name</p>
+<p>(select 1,2,3 order by 3 asc)union(select 2,3,4)</p>
+<h1 id="文件包含">文件包含</h1>
+<p>远程文件包含</p>
+<p>后缀名写死用？ 绕过</p>
+<p>伪协议</p>
+<pre><code class="language-php">file:// 访问本地文件系统
+http:// 访问HTTP(s)网址
+ftp:// 访问FTP(s)
+php:// 访问各个输入/输出流
+zlib:// 压缩流
+data:// 数据
+glob:// 查找匹配的文件路径模式
+phar:// php归档
+ssh2:// Secure Shell 2
+rar:// RAR
+ogg:// 音频流
+expect:// 处理交互式的流
+zip:// 压缩流---访问压缩文件 111.zip(后缀名随意)#1.php
+
+phar://  111.zip(后缀名随意)/111.php
+
+php://filter/convert.base64-encode/resource=index.php
+
+php://input 利用条件allow_url_include=On
+
+对allow_url_fopen 不做要求
+
+php://input可以读取没有处理过的post数据
+</code></pre>
+<p>session.upload_progress.enabled这个参数在php.ini默认开启，需要手动置为off，如果不是off,就会在上传的过程中生成上传进度文件，它的存储路径可以在phpinfo获取到</p>
+<h1 id="php弱类型">PHP弱类型</h1>
+<p>intival 函数 转非空数组返回1</p>
+<h1 id="ssrf">SSRF</h1>
+<p>服务器端请求伪造，利用漏洞伪造服务器端发送请求，从而突破客户端获取不到的数据</p>
+<p>相关函数</p>
+<p>file_get_contents()</p>
+<p>fsockopen()</p>
+<p>curl()</p>
+<h1 id="xxe系列">XXE系列</h1>
+<p>xml外部实体注入漏洞，XXE漏洞发生在XML输入时，没有禁止外部实体的加载，致可加载恶意外部文件，造成文件读取、命令执行、内网端口扫描</p>
+<p>xxe漏洞出发点往往是上传xml文件的位置，没有对上传的xml文件进行过滤，导致可上传恶意xml文件</p>
+<h2 id="xml基础知识">XML基础知识</h2>
+<p>XML指可扩展标记语言</p>
+<p>XML被设计用来传输和存储数据</p>
+<p>XML语言没有预定义的标签，允许作者定义自己的标签和自己的文档结构</p>
+<p>语法规则：</p>
+<p>XML文档必须有一个根元素</p>
+<p>XML元素都必须有一个关闭标签</p>
+<p>XML标签对大小敏感</p>
+<p>XML元素必须被正确的嵌套</p>
+<p>XML属性值必须加引号</p>
+<pre><code class="language-xml">&lt;?xml version='1.0' encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;note&gt;
+&lt;to&gt;a&lt;/to&gt;
+&lt;from&gt;b&lt;/from&gt;
+&lt;heading&gt;c&lt;/heading&gt;
+&lt;/note&gt;
+</code></pre>
+<p>DTD(文档类型定义)</p>
+<p>DTD的作用是定义XML文档的合法构建模块</p>
+<p>DTD可以在xml文档内生命，也可以外部引用</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D">正则匹配</a></li>
+<li><a href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">反序列化</a>
+<ul>
+<li><a href="#%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95">魔术方法</a></li>
+<li><a href="#phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">phar反序列化</a></li>
+</ul>
+</li>
+<li><a href="#sql%E6%B3%A8%E5%85%A5">SQL注入</a>
+<ul>
+<li><a href="#order-by%E6%B3%A8%E5%85%A5">order by注入</a></li>
+</ul>
+</li>
+<li><a href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB">文件包含</a></li>
+<li><a href="#php%E5%BC%B1%E7%B1%BB%E5%9E%8B">PHP弱类型</a></li>
+<li><a href="#ssrf">SSRF</a></li>
+<li><a href="#xxe%E7%B3%BB%E5%88%97">XXE系列</a>
+<ul>
+<li><a href="#xml%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86">XML基础知识</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://beicheng-maker.github.io/post/python-chang-yong-ku">
+              <h3 class="post-title">
+                Python 常用库
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://beicheng-maker.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,314 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python 常用库 | Gridea</title>
+<link rel="shortcut icon" href="https://beicheng-maker.github.io//favicon.ico?v=1610949188503">
+<link href="https://cdn.remixicon.com/releases/v2.1.0/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://beicheng-maker.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Python 常用库 | Gridea - Atom Feed" href="https://beicheng-maker.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="json
+import json
+_dic= {&quot;name&quot;:&quot;loop&quot;,&quot;age&quot;:&quot;12&quot;}
+s = json.dumps(_dic,indent=2) ..." />
+    <meta name="keywords" content="python" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://beicheng-maker.github.io/">
+  <img class="avatar" src="https://beicheng-maker.github.io//images/avatar.png?v=1610949188503" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Python 常用库
+            </h2>
+            <div class="post-info">
+              <span>
+                2021-01-17
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://beicheng-maker.github.io/tag/383NHLOD_" class="post-tag">
+                  # python
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://beicheng-maker.github.io//post-images/python-chang-yong-ku.jpg" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="json">json</h1>
+<pre><code>import json
+_dic= {&quot;name&quot;:&quot;loop&quot;,&quot;age&quot;:&quot;12&quot;}
+s = json.dumps(_dic,indent=2) #转化为一个序列
+d = json.loads(s)#转换为一个字典
+</code></pre>
+<h1 id="beautifulsoup">Beautifulsoup</h1>
+<pre><code class="language-python">r=request.get(&quot;https://www.baidu.com&quot;)
+doc=r.content
+soup=Beautifulsoup(doc) //创建一个对象
+soup.prettify() //格式化源码
+soup.head //获取head标签
+soup.title //获取titile标签
+soup.find_all(&quot;p&quot;) //返回所有p标签
+soup.find_all(&quot;p&quot;)[0] //取第一个 类似于数组
+soup.head.title.string //取标签内容
+///
+for i in soup.find_all(&quot;a&quot;)
+	print i['herf'] //取herf属性的内容
+///
+soup.find_all(id=&quot;***&quot;)//指定id取标签
+soup.find_all(id=&quot;***&quot;).[0]['href'] 取标签里的href内容
+soup.find_all(id=True)所有有id的标签
+soup.find_all([&quot;a&quot;,&quot;b&quot;]) 取出所有a标签和b标签
+soup.find_all(text=&quot;Elsie&quot;)判断有没有Elsie值
+soup.find_all(text=re.compile(&quot;sisters&quot;)) 取出sisters属性里的内容
+</code></pre>
+<h1 id="socket">socket</h1>
+<h1 id="multiprocessing-threading">multiprocessing-threading</h1>
+<p>线程与进程的区别</p>
+<p>1、线程比进程调度速度更快</p>
+<p>2、进程能够利用多核</p>
+<p>后起之秀：协程</p>
+<pre><code class="language-python">import threading
+count=0
+lock=threading.Lock()
+def doAdd():
+	global count,lock
+	lock.acquire()
+	for i in xrange(100):
+		count+=1
+	lock.release()
+for i in range(5):
+	threading.Thread(target=doAdd,args=(),name='thread-'+str(i)).start()
+time.sleep(2)
+print count
+</code></pre>
+<pre><code class="language-python">import threading
+count=0
+class Counter(threading,Thread):
+	def __init__(self,lock,threadName):
+        super(Counter,self).__init__(name=threadName)#一定要是调用父类的初始化函数
+        self.lock=lock
+        def run(self):
+            global count
+            self.lock.acquire()
+            for i in rang(10000):
+                count+=1
+      		self.lock.release()
+lock=threading.Lock()
+for i in rang(5):
+    Counter(lock,&quot;thread-&quot;+str(i)).start()
+time.sleep(2)
+print(count)
+</code></pre>
+<pre><code class="language-python">threads=[]
+for ip in getip():
+	t=threaing.Thread(target=scan,args=(ip,))
+    threads.appends(t)
+n=0
+while True:
+    if n==len(threads):
+        break
+    thread=threads[n]
+    if threading.activeCount()&lt;2: #一个线程启动
+        print('started:'+str(thread))
+        thread.start()
+    else:
+        n=n-1
+    n=n+1
+    print(n)
+</code></pre>
+<h1 id="subprocess">subprocess</h1>
+<pre><code class="language-python">retcode=subprocess.call(&quot;ls&quot;,&quot;-l&quot;)#call函数可以认为是对popen和wait的分装
+retcode=subprocess.call(&quot;ls -l&quot;,shell=True)#shell指定命令行会通过shell来执行，具有更加丰富的用法
+retcode=subprocess.check_all(['ls','-l'])#父进程等待子进程完成，返回0检查退出信息，如果returncode不为0，则举出错误
+retcode=subprocess.check_output([&quot;ls&quot;,&quot;-l&quot;])#父进程等待子进程完成，返回子进程向标准输出的输出结果，检查退出信息，如果returncode不为0，则会举出错误
+
+
+&quot;&quot;&quot;
+popen更细粒化的调用
+不会阻塞主进程，可以调用wait()方法,父进程才会等待
+&quot;&quot;&quot;
+child=subprocess.Popen(['ping','-c','4','127.0.0.1'])
+child=subprocess.Popen('ping -c4 127.0.0.1',shell=True)
+child.wait(4)#可以设置超时时长
+p=subporcess.Popen(args,stdout=subprocess.POPE,stderr=subprocess.PIPE)
+p=subprocess.Popen(args,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)#将错误按照一般返回进行输出
+#child对象常用方法
+child.pid #返回子进程的pid
+child.poll() #检查子进程的状态
+child.kill()#终止子进程
+child.send_signal()#向进程发送信号
+child.terminate()#终止子进程
+
+
+</code></pre>
+<h1 id="image">Image</h1>
+<pre><code>from PIL import Image
+</code></pre>
+<h1 id="queue">Queue</h1>
+<pre><code class="language-python">import queue
+q=queue.Queue()
+for i in range(10):
+	q.put(i)
+while not q.empty():
+	print(q.get())
+</code></pre>
+<pre><code class="language-python">import queue
+import threading
+q=queue.Queue()
+for i in range(30):
+    q.put(i)
+def test(q):
+    while not q.empty():
+     threadingname=threading.current_thread().getName()
+    print(threadname,q.get())
+for i in range(3):
+    t=threadingThread(target=test,args=(q,))
+    t.start
+        
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#json">json</a></li>
+<li><a href="#beautifulsoup">Beautifulsoup</a></li>
+<li><a href="#socket">socket</a></li>
+<li><a href="#multiprocessing-threading">multiprocessing-threading</a></li>
+<li><a href="#subprocess">subprocess</a></li>
+<li><a href="#image">Image</a></li>
+<li><a href="#queue">Queue</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://beicheng-maker.github.io/post/ctf-show-sql-zhu-ru">
+              <h3 class="post-title">
+                 CTF show sql注入
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://beicheng-maker.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
